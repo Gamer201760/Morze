@@ -15,15 +15,16 @@ MORSE_CODE = {
     '2': '..---', '3': '...--', '4': '....-',
     '5': '.....', '6': '-....', '7': '--...',
     '8': '---..', '9': '----.', '0': '.....',
+    ' ': ' '
 }
 
-valid_characters = ('-', '.')
+valid_characters = ('-', '.', ' ')
 
 
 # Проверка текст на корректность
 def check_text(text: str) -> bool:
-    for i in text:
-        if i.isalpha() and not ord('A') <= ord(i.upper()) <= ord('Z'):
+    for i in text.upper():
+        if i not in MORSE_CODE:
             return False
     return True
 
@@ -32,10 +33,7 @@ def check_text(text: str) -> bool:
 def encode_to_morse(text: str) -> str:
     morse: list[str] = []
     for i in text.upper():
-        if i in MORSE_CODE:
-            morse.append(MORSE_CODE[i])  # Кодируются ТОЛЬКО буквы латинского алфавита и цифры
-        else:
-            morse.append(i)
+        morse.append(MORSE_CODE[i])  # Кодируются ТОЛЬКО буквы латинского алфавита и цифры
     return ' '.join(morse)  # Разделитель между буквами - 1 пробел, между словами - 3 пробела
 
 
@@ -48,15 +46,15 @@ def check_code(text: str) -> bool:
 
 # Функция декодирования текта
 def decode_from_morse(code: str) -> str:
-    code = code.split('   ') # Бьём код по словам
-    text = '' # Тут будет хранится финальный текст
-    for i in code: # Бежим по словам
-        for b in i.split(): # Бежим по буквам
-            for s, c in MORSE_CODE.items(): # Бежим по словарю
-                if b == c: # Сравниваем
-                    text += s # Записываем
-        text += ' ' # Пробел между словами
-    return text # Вернули предложение
+    code = code.split('   ')  # Бьём код по словам
+    text = ''  # Тут будет хранится финальный текст
+    for i in code:  # Бежим по словам
+        for b in i.split():  # Бежим по буквам
+            for s, c in MORSE_CODE.items():  # Бежим по словарю
+                if b == c:  # Сравниваем
+                    text += s  # Записываем
+        text += ' '  # Пробел между словами
+    return text  # Вернули предложение
 
 
 # Функция main
